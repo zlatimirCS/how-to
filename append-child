@@ -1,0 +1,78 @@
+// Adding dropdown for switch between types of view: Weekly, Daily
+  const [currentView, setCurrentView] = useState('timeGridWeek');
+  const [refetch, setRefetch] = useState(false);
+
+  let viewToDisplay;
+
+  useEffect(() => {
+    viewToDisplay = localStorage.getItem('view') || 'timeGridWeek';
+  }, [])
+
+  let testHTML = 
+    `<div id="veryUniqueID" class="dropdownContainer">
+    <div id="dropdownViewContainer" class="dropdownViewContainer">${localStorage.getItem('view') === 'timeGridDay' ? "Dan" : 'Nedelja'}<img src="/images/arrowDropdown.svg" class="dropdownIcon" />
+  
+    </div>
+    
+    </div>`;
+
+    let dropdownContent;
+
+    const changeViewToDaily = (e) => {
+      e.stopPropagation();
+      localStorage.setItem('view', 'timeGridDay');
+      window.location.reload();
+    }
+
+    const changeViewToWeekly = (e) => {
+      e.stopPropagation();
+      localStorage.setItem('view', 'timeGridWeek');
+      window.location.reload();
+    }
+
+  if (typeof document !== undefined && !document.getElementById('veryUniqueID')) {
+  const dateDropdown = document?.querySelector('.fc-toolbar-chunk');
+    dateDropdown?.querySelector('.fc-toolbar-title')?.classList.add('toolBarTitle')
+    dateDropdown?.classList.add('dropdownElementFlex');
+    dropdownContent = document?.createElement('div');
+    dropdownContent.innerHTML += testHTML;
+    dateDropdown?.appendChild(dropdownContent);
+  }
+
+  const deleteDropdownoptions = () => {
+    if(document.querySelector('.dropdownOptions')) {
+    const toRemove = document.querySelector('.dropdownOptions').parentElement;
+    document.querySelector('.dropdownContainer').removeChild(toRemove)
+    setRefetch(!refetch);
+    } 
+  }
+
+  let dropdownContentOptions;
+
+  const renderDropdownoptions = (event) => {
+    event.stopPropagation();
+
+    if(!document.querySelector('.dropdownOptions'))  {
+      const dropdownOptionsWrapper =  document.querySelector('.dropdownContainer');
+      dropdownContentOptions = document.createElement('div');
+      dropdownContentOptions.innerHTML += `<ul class="dropdownOptions">
+      <li id="dailyViewCalendar">Dan</li>
+      <li id="weeklyViewCalendar">Nedelja</li>
+      <li>Mesec</li>
+    </ul>`;
+    dropdownOptionsWrapper.appendChild(dropdownContentOptions);
+    
+    }
+    document.getElementById('dailyViewCalendar').addEventListener('click', changeViewToDaily)
+    document.getElementById('weeklyViewCalendar').addEventListener('click', changeViewToWeekly)
+    if(document.querySelector('.dropdownOptions')) {
+      document.getElementById('veryUniqueID').addEventListener('click', deleteDropdownoptions)
+    } 
+  }
+
+  useEffect(() => {
+    if(document.getElementById('veryUniqueID')) {
+    document.getElementById('veryUniqueID').addEventListener('click', renderDropdownoptions)
+    }
+  })
+  // Adding dropdown for switch between types of view: Weekly, Daily
