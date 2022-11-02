@@ -1,0 +1,169 @@
+// FIRST CREATE CONTEXT IN CONTEXT FOLDER
+import React, { useReducer, useContext } from "react";
+
+import reducer from "./reducer";
+import axios from "axios";
+
+import {
+  DISPLAY_ALERT,
+  CLEAR_ALERT,
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
+} from "./actions";
+
+const initialState = {
+  isLoading: false,
+  showAlert: false,
+  alertText: "",
+  alertType: "",
+  user: null,
+  token: null,
+  userLocation: "",
+  jobLocation: "",
+};
+
+const AppContext = React.createContext();
+
+const AppProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const displayAlert = () => {
+    dispatch({ type: DISPLAY_ALERT });
+    clearAlert();
+  };
+
+  const clearAlert = () => {
+    setTimeout(() => {
+      dispatch({ type: CLEAR_ALERT });
+    }, 3000);
+  };
+
+  const registerUser = async (currentUser) => {
+    dispatch({ type: REGISTER_USER_BEGIN });
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        currentUser
+      );
+      const { user, token, location } = response.data;
+      dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: { user, token, location },
+      });
+      console.log("response", response);
+    } catch (error) {
+      console.log(error.response);
+      dispatch({
+        type: REGISTER_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  return (
+    <AppContext.Provider
+      value={{ ...state, displayAlert, clearAlert, registerUser }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+const useAppContext = () => {
+  return useContext(AppContext);
+};
+
+export { AppProvider, initialState, useAppContext };
+
+
+// IN THE SAME FOLDER CREATE ACTIONS.JS
+export const DISPLAY_ALERT = "SHOW_ALERT";
+export const CLEAR_ALERT = "CLEAR_ALERT";
+
+export const REGISTER_USER_BEGIN = "REGISTER_USER_BEGIN";
+export const REGISTER_USER_SUCCESS = "REGISTER_USER_SUCCESS";
+export const REGISTER_USER_ERROR = "REGISTER_USER_ERROR";
+
+// CREATE REDUCER IN THE SAME FOLDER
+import {
+  DISPLAY_ALERT,
+  CLEAR_ALERT,
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
+} from "./actions";
+
+const reducer = (state, action) => {
+  if (action.type === DISPLAY_ALERT) {
+    return {
+      ...state,
+      showAlert: true,
+      alertType: "danger",
+      alertText: "Please provide all values",
+    };
+  }
+  if (action.type === CLEAR_ALERT) {
+    return {
+      ...state,
+      showAlert: false,
+      alertType: "",
+      alertText: "",
+    };
+  }
+  if (action.type === REGISTER_USER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === REGISTER_USER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      token: action.payload.token,
+      user: action.payload.user,
+      userLocation: action.payload.location,
+      jobLocation: action.payload.location,
+      showAlert: true,
+      alertType: "success",
+      alertText: "User created! Redirecting...",
+    };
+  }
+  if (action.type === REGISTER_USER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+  throw new Error(`no such action: ${action.type}`);
+};
+
+export default reducer;
+
+//IMPORT IT IN THE INDEX JS
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "normalize.css";
+import "./index.css";
+import App from "./App";
+import { AppProvider } from "./context/appContext";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <AppProvider>
+      <App />
+    </AppProvider>
+  </React.StrictMode>
+);
+
+// AND USE IT IN THE COMPONENT
+import { useAppContext } from "../context/appContext";
+
+const Alert = () => {
+  const { alertType, alertText } = useAppContext();
+  return <div className={`alert alert-${alertType}`}>{alertText}</div>;
+};
+export default Alert;
