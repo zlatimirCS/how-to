@@ -331,3 +331,150 @@ app.use('/', (req, res, next) => {
 
 app.listen(3000);
 ------------------------------------------------------
+// instead of app.use we can filter incoming requests with get,post,delete,put
+app.post("/product", (req, res, next) => {
+  console.log(req.body);
+  res.redirect("/");
+});
+------------------------------------------------------
+// we can split our routes to different files
+// routes/admin.js
+// app.js
+const express = require("express");
+const bodyParser = require("body-parser");
+const adminRoutes = require("./routes/admin");
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(adminRoutes);
+app.use(shopRoutes);
+
+app.use("/", (req, res, next) => {
+  res.send("<h1>Hello from Express!</h1>");
+});
+
+app.listen(3000);
+// routes/admin.js
+const express = require("express");
+const router = express.Router();
+
+router.get("/add-product", (req, res, next) => {
+  res.send(
+    '<form action="product" method="POST"><input type="text" name="message" /><button type="submit">Send</button></form>'
+  );
+});
+
+router.post("/product", (req, res, next) => {
+  console.log(req.body);
+  res.redirect("/");
+});
+
+module.exports = router;
+// routes/shop.js
+// here if we add router.get and visit not existing route, we will get error
+// if we add router.use, we will get Hello from Express, because it will be executed for all routes
+const express = require("express");
+const router = express.Router();
+
+router.get("/", (req, res, next) => {
+  res.send("<h1>Hello from Express!</h1>");
+});
+
+// router.use("/", (req, res, next) => {
+//   res.send("<h1>Hello from Express!</h1>");
+// });
+
+module.exports = router;
+------------------------------------------------------
+// adding 404 page
+// app.js
+app.use((req, res, next) => {
+  res.status(404).send("<h1>Page not found</h1>");
+});
+// this will be executed for all routes
+------------------------------------------------------
+// filtering paths
+// app.js
+app.use("/admin", adminRoutes);
+// now only routes starting with /admin will be handled by adminRoutes
+------------------------------------------------------
+// creating html pages
+// create views folder
+// create views/shop.html
+------------------------------------------------------
+// serving html pages
+// we need to use path module
+// shop.js
+// __dirname is global variable that holds current path to file
+// path.join will join all arguments to one path
+// path.join(__dirname, "..", "views", "shop.html")
+// will be /views/shop.html
+const express = require("express");
+const router = express.Router();
+const path = require("path");
+
+router.get("/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "..", "views", "shop.html"));
+});
+
+module.exports = router;
+------------------------------------------------------
+// finaly adding 404 page in app.js
+// app.js
+const express = require("express");
+const bodyParser = require("body-parser");
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const path = require("path");
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use("/admin", adminRoutes);
+
+app.use(shopRoutes);
+
+app.use((req, res, next) => {
+  res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
+});
+
+app.listen(3000);
+------------------------------------------------------
+// we create helper file to get root path
+// util/path.js
+const path = require("path");
+
+module.exports = path.dirname(process.mainModule.filename);
+// This is the path to the root directory of the project.
+------------------------------------------------------
+// we use helper file in admin.js and shop.js
+// admin.js
+const express = require("express");
+const router = express.Router();
+const path = require("path");
+const rootDir = require("../util/path");
+
+router.get("/add-product", (req, res, next) => {
+  res.sendFile(path.join(rootDir, "views", "add-product.html"));
+});
+
+router.post("/product", (req, res, next) => {
+  console.log(req.body);
+  res.redirect("/");
+});
+
+module.exports = router;
+------------------------------------------------------
+// serving file statically
+// to be able to serve files statically we need to use express.static
+// app.js
+app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "public")));
+// and then we can use files from public folder
+// shop.html
+<link rel="stylesheet" href="css/main.css"></link>
+// here we have css folder in public folder
+------------------------------------------------------
+
+
