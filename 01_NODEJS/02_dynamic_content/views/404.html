@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  
+    main {
+      padding: 1rem;
+    }
+  
+    .main-header {
+      height: 56px;
+      padding: 0 1.5rem;
+      background-color: orange;
+    }
+  
+    .main-header__nav {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+  
+    .main-header__item-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 16px;
+    }
+  
+    .main-header__item {
+      margin: 0;
+      padding: 0;
+    }
+  
+    .main-header__item a {
+      text-decoration: none;
+      color: white;
+    }
+  
+    .main-header__item a:hover,
+    .main-header__item a:active,
+    .main-header__item a.active {
+      color: purple;
+    }
+  
+    .product-form {
+      width: 30rem;
+      max-width: 90%;
+      margin: auto;
+    }
+  
+    .form-control {
+      margin-bottom: 0.5rem;
+    }
+  
+    .form-control label,
+    .form-control input {
+      display: block;
+      width: 100%;
+    }
+  
+    .form-control input {
+      border: 1px solid #753030;
+      font: inherit;
+      border-radius: 2px;
+    }
+  
+    button {
+      border: 1px solid #753030;
+      background-color: #753030;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 2px;
+      font: inherit;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="main-header">
+    <nav class="main-header__nav">
+      <ul class="main-header__item-list">
+        <li class="main-header__item"><a class="active" href="/">Shop</a></li>
+        <li class="main-header__item"><a href="/add-product">Add product</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Page not found</h1>
+  </main>
+</body>
+
+</html>

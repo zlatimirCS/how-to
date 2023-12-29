@@ -1,5 +1,7 @@
 Node.js
 
+// UNDERSTANDING THE BASICS
+
 const http = require('http');
 const server = http.createServer((req, res) => {
   console.log(req.url);
@@ -241,6 +243,9 @@ Our own created scripts must go with npm run
   Npm install nodemon –save - dev
 "nodemon": "^3.0.2"   – ^ means - after running npm install, it will automatically pick later version if available. 
 "start": "nodemon app.js",
+
+
+// WORKING WITH EXPRESS.JS
 —-----------------------------------------------------
   Npm install express –save
 const express = require('express');
@@ -475,6 +480,20 @@ app.use(express.static(path.join(__dirname, "public")));
 // shop.html
 <link rel="stylesheet" href="css/main.css"></link>
 // here we have css folder in public folder
+------------------------------------------------------
+
+// WORKING WITH DYNAMIC CONTENT & ADDING TEMPLATING ENGINES
+npm install --save ejs pug express-handlebars
+// WE NEED TO CONFIGURE TO BE ABLE TO USE TEMPLATE ENGINES
+// PUG
+// APP.JS
+app.set("view engine", "pug");
+app.set("views", "views");
+// NOW WE CREATE PUG FILES IN VIEWS FOLDER
+router.get("/", (req, res, next) => {
+  res.render("shop");
+});
+// res render shop, will find the shop.pug file and render, here we can use res.render
 ------------------------------------------------------
 
 
