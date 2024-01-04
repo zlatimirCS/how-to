@@ -495,5 +495,23 @@ router.get("/", (req, res, next) => {
 });
 // res render shop, will find the shop.pug file and render, here we can use res.render
 ------------------------------------------------------
+// in order to send data to the pug template
+router.get("/", (req, res, next) => {
+  const products = adminData.products;
+  res.render("shop", { prods: products, docTitle: "Shop" });
+});
+// now prods and docTitle are available inside of shop.pug template
+------------------------------------------------------
+// we convert shop.html to shop.pug
+// we use extends to extend main-layout.pug from layouts folder
+extends layouts/main-layout.pug
+// in main-layout we can create block styles
+block styles
+// and then we can add styles in shop.pug
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+// check shop.pug and main-layout.pug
+------------------------------------------------------
+
 
 
