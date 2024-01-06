@@ -577,6 +577,10 @@ app.listen(3000);
 ------------------------------------------------------
 // check 03_express_handlebars for more info
 // on how to work with handlebars
+------------------------------------------------------
+// EJS
+// check 04_ejs for more info
+------------------------------------------------------
 
 
 
