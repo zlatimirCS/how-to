@@ -6,6 +6,9 @@
   "scripts": {
     "start": "nodemon app.js"
   },
+  "nodemonConfig": {
+      "ignore": ["data/*"]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

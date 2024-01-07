@@ -585,7 +585,36 @@ app.listen(3000);
 // it is good practice to use controllers
 // check 05_mvc_controllers for more info
 ------------------------------------------------------
-
+// there was an issue after res.redirect - css files were not loaded
+// added package.json 
+"nodemonConfig": {
+      "ignore": ["data/*"]
+  },
+// so node will ignore data folder and will not restart server
+------------------------------------------------------
+// it was giving error when trying to reload page on the root /
+// because there was no products.json file
+if (!fs.existsSync(p)) {
+      return cb([]);
+    }
+// so we added this if statement
+static fetchAll(cb) {
+    const p = path.join(
+      path.dirname(require.main.filename),
+      "data",
+      "products.json"
+    );
+    if (!fs.existsSync(p)) {
+      return cb([]);
+    }
+    fs.readFile(p, (err, fileContent) => {
+      if (err) {
+        cb([]);
+      }
+      cb(JSON.parse(fileContent));
+    });
+  }
+------------------------------------------------------
 
 
 

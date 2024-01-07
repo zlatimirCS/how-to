@@ -30,6 +30,9 @@ module.exports = class Product {
       "data",
       "products.json"
     );
+    if (!fs.existsSync(p)) {
+      return cb([]);
+    }
     fs.readFile(p, (err, fileContent) => {
       if (err) {
         cb([]);
