@@ -581,6 +581,11 @@ app.listen(3000);
 // EJS
 // check 04_ejs for more info
 ------------------------------------------------------
+// we can now use controllers to handle routes
+// it is good practice to use controllers
+// check 05_mvc_controllers for more info
+------------------------------------------------------
+
 
 
 
