@@ -1,5 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
+
+const getProductsFromFile = (cb) => {
+  return path.join(
+    path.dirname(require.main.filename),
+    'data',
+    'products.json'
+  );
+};
 
 module.exports = class Product {
   constructor(t) {
@@ -7,11 +15,12 @@ module.exports = class Product {
   }
 
   save() {
-    const p = path.join(
-      path.dirname(require.main.filename),
-      "data",
-      "products.json"
-    );
+    // const p = path.join(
+    //   path.dirname(require.main.filename),
+    //   "data",
+    //   "products.json"
+    // );
+    let p = getProductsFromFile();
     fs.readFile(p, (err, fileContent) => {
       let products = [];
       if (!err) {
@@ -25,11 +34,12 @@ module.exports = class Product {
   }
 
   static fetchAll(cb) {
-    const p = path.join(
-      path.dirname(require.main.filename),
-      "data",
-      "products.json"
-    );
+    // const p = path.join(
+    //   path.dirname(require.main.filename),
+    //   "data",
+    //   "products.json"
+    // );
+    let p = getProductsFromFile();
     if (!fs.existsSync(p)) {
       return cb([]);
     }
