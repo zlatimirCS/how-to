@@ -211,3 +211,31 @@ with all the query parameters you added while filtering.
 router.push(`${path}?page=${currentPage}&sort=${sortString}${filterQuery}${isSale ? '&OnSale=true' : ''}${benefit.wic ? '&benefit_program=WIC' : ''}`, undefined, { scroll: false });
 router.replace(`${path}?page=${currentPage}&sort=${sortString}${filterQuery}${isSale ? '&OnSale=true' : ''}${benefit.wic ? '&benefit_program=WIC' : ''}`, undefined, { scroll: false });
 -----------------------------------------------------------------------
+// example of memo in next.js
+import React from 'react';
+import { PrimaryButton } from '@/components/buttons/PrimaryButton';
+import Image from 'next/image';
+import Link from 'next/link';
+
+const ImageTextBlurb = React.memo(({ image, btnText, title, subtitle, link }) => {
+  console.log('ImageTextBlurb');
+  return (
+    <div className="image-text-blurb">
+      <div className="image-text-blurb-container">
+        <Image src={image} layout="fill" objectFit="cover" alt="image text blurb" />
+      </div>
+      <div className="image-text-blurb-content">
+        <h4>{title}</h4>
+        <p className="subtitle">{subtitle}</p>
+        <Link href={link}>
+          <a title={title}>
+            <PrimaryButton text={btnText} />
+          </a>
+        </Link>
+      </div>
+    </div>
+  );
+});
+
+export { ImageTextBlurb };
+-----------------------------------------------------------------------
