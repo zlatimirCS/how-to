@@ -239,3 +239,70 @@ const ImageTextBlurb = React.memo(({ image, btnText, title, subtitle, link }) =>
 
 export { ImageTextBlurb };
 -----------------------------------------------------------------------
+// do determine on whih pathname we are in next.js
+// we can use usePathname hook
+// https://nextjs.org/docs/app/api-reference/functions/use-pathname
+import { usePathname } from "next/navigation";
+const pathname = usePathname();
+-----------------------------------------------------------------------
+<Image
+            src="/assets/images/hero.png"
+            alt="hero"
+            width={1000}
+            height={1000}
+            className="max-h-[70vh] object-contain object-center 2xl:max-h-[50vh]"
+          />
+// here we have example of image with max height and width
+// we can use object-contain or object-cover to fit image in container
+-----------------------------------------------------------------------
+// in react we can use immer to update state
+// the way immer works is that it creates a draft of the state and then we can update the draft
+// and then immer will create new state from the draft
+// here is example of using immer
+import produce from 'immer';
+const person = {
+  personal: {
+    firstName: '',
+    lastName: '',
+  }
+  address: {
+    street: '',
+    city: '',
+    zip: '',
+  }
+}
+
+const updatedPerson = produce(person, (draft) => {
+  draft.personal.firstName = 'John';
+  draft.personal.lastName = 'Doe';
+  draft.address.street = '123 Main St';
+  draft.address.city = 'Anytown';
+  draft.address.zip = '12345';
+});
+// https://www.google.com/search?sca_esv=31c11a842872212b&sxsrf=ACQVn08JYr2SzGGNGaLo-l9eCYPUD3GE7w:1710234126957&q=immer+react&tbm=vid&source=lnms&prmd=vinsmbtz&sa=X&ved=2ahUKEwjatPrMru6EAxVTh_0HHfY7BdsQ0pQJegQIIRAB&biw=1848&bih=948&dpr=1#fpstate=ive&vld=cid:4920bba4,vid:8kC5fHlir4E,st:0
+// https://www.youtube.com/@CodingWithChaim/videos
+-----------------------------------------------------------------------
+// if we want to prevent right click in react we can use useEffect
+useEffect(() => {
+  document.addEventListener(
+    'contextmenu',
+    function (e) {
+      e.preventDefault();
+    },
+    false
+  );
+
+  return () => {
+    document.removeEventListener(
+      'contextmenu',
+      function (e) {
+        e.preventDefault();
+      },
+      false
+    );
+  };
+}, []);
+-----------------------------------------------------------------------
+// forwardRef example
+https://www.youtube.com/watch?v=0YTYqg0ETx8
+-----------------------------------------------------------------------
