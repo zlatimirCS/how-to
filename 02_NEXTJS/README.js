@@ -306,3 +306,94 @@ useEffect(() => {
 // forwardRef example
 https://www.youtube.com/watch?v=0YTYqg0ETx8
 -----------------------------------------------------------------------
+// How do you override context for a specific part of the component tree?
+// Sometimes, you may need to override the context with a different value for a certain part of the component tree. It is possible to override the context value by wrapping that part in a provider with a different value.
+
+// As an example, the following code applies a blue background to all the pages except for the contact page, where a white background will be applied using a context provider:
+
+<ColorContext.Provider value="blue">
+  <About />
+  <Services />
+  <Clients />
+  <ColorContext.Provider value="white">
+    <Contact />
+  </ColorContext.Provider>
+</ColorContext.Provider>
+-----------------------------------------------------------------------
+// hooks to explore
+useImperativeHandle, useImmer, useFetch, useDebounce, useForm, useLocalStorage, useDebugValue
+https://usehooks.com/
+https://github.com/imbhargav5/rooks
+-----------------------------------------------------------------------
+// form validation example reusable
+export const validateInputs = (fields, rules) => {
+  let formValid = true;
+  let errors = {};
+
+  for (let field in fields) {
+    if (rules[field]) {
+      for (let rule of rules[field]) {
+        if (rule.type === 'required' && !fields[field]) {
+          formValid = false;
+          errors[field] = rule.message;
+          break;
+        }
+        if (rule.type === 'regex' && !rule.pattern.test(fields[field])) {
+          formValid = false;
+          errors[field] = rule.message;
+          break;
+        }
+      }
+    }
+  }
+
+  return { formValid, errors };
+};
+// to consume it
+const fields = {
+  email: 'test@example.com',
+  password: 'password',
+};
+
+const rules = {
+  email: [
+    { type: 'required', message: 'Email is required' },
+    { type: 'regex', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email is invalid' },
+  ],
+  password: [
+    { type: 'required', message: 'Password is required' },
+  ],
+};
+
+const { formValid, errors } = validateInputs(fields, rules);
+-----------------------------------------------------------------------
+UserSchema.post("validate", function (user) {
+  const notHashed = user.password;
+  const salt = bcrypt.genSaltSync(10);
+  const hashed = bcrypt.hashSync(notHashed, salt);
+  user.password = hashed;
+});
+-----------------------------------------------------------------------
+https://daisyui.com/
+npm install -D daisyui@latest
+// -D here means that we are installing it as a dev dependency
+npm i @tailwindcss/typography
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+    },
+  },
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+};
+
+-----------------------------------------------------------------------
