@@ -47,3 +47,7 @@ UserSchema.post("validate", function (user) {
   user.password = hashed;
 });
 -----------------------------------------------------------------------
+mongodump --db akvadom --gzip --archive=akvadom.tar.gz
+mongorestore --gzip --archive=termoklik-staging-db.tar.gz
+i kad restorujes ides iz fajla tipa mongorestore -d akvadom -c products dump/akvadom/products.bson
+-----------------------------------------------------------------------
